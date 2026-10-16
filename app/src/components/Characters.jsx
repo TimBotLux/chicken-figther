@@ -1,9 +1,9 @@
-import Poulet from './Poulet.jsx';
+import Poulet, { armStyle, gloveStyle } from './Poulet.jsx';
 
 const K = '#1A1A1A';
 
 // Rat « Rattrapage », porté depuis Rat.dc.html.
-export function Rat({ size = 300, style }) {
+export function Rat({ size = 300, style, fist }) {
   return (
     <div style={{ width: Math.round(size * 0.8), height: size, position: 'relative', ...style }}>
       <svg role="img" aria-label="Rat « Rattrapage », champion poids mouche, en garde" viewBox="0 0 240 300" style={{ width: '100%', height: '100%', display: 'block', overflow: 'visible' }}>
@@ -26,13 +26,13 @@ export function Rat({ size = 300, style }) {
         <path d="M76 194 C 100 206, 140 206, 164 194 L 165 212 C 140 224, 100 224, 75 212 Z" fill="#FFC93C" stroke={K} strokeWidth="3.5" strokeLinejoin="round" />
         <ellipse cx="120" cy="208" rx="19" ry="14" fill="#FFE38A" stroke={K} strokeWidth="3" />
         <path d="M120 199 L120 218 M120 204 l-5 -3 M120 204 l5 -3 M120 209 l-5 -3 M120 209 l5 -3 M120 214 l-5 -3 M120 214 l5 -3" stroke="#9A6B00" strokeWidth="2.2" strokeLinecap="round" />
-        <g className="arm-l">
+        <g className="arm-l" style={armStyle(fist?.l)}>
           <path d="M60 130 C 36 132, 22 154, 28 176 C 32 190, 50 192, 58 180 C 66 166, 70 150, 74 140 Z" fill="#8E919B" stroke={K} strokeWidth="4" strokeLinejoin="round" />
           <path d="M34 172 C 40 184, 52 184, 58 174" stroke="#6E717B" strokeWidth="3" fill="none" strokeLinecap="round" />
           <path d="M36 182 C 50 196, 70 176, 80 156 L 68 146 C 60 162, 50 172, 40 170 Z" fill="#8E919B" stroke={K} strokeWidth="3.5" strokeLinejoin="round" />
           <ellipse cx="54" cy="136" rx="20" ry="16" fill="#8E919B" stroke={K} strokeWidth="3.5" />
         </g>
-        <g className="arm-r">
+        <g className="arm-r" style={armStyle(fist?.r)}>
           <path d="M180 130 C 204 132, 218 154, 212 176 C 208 190, 190 192, 182 180 C 174 166, 170 150, 166 140 Z" fill="#8E919B" stroke={K} strokeWidth="4" strokeLinejoin="round" />
           <path d="M206 172 C 200 184, 188 184, 182 174" stroke="#6E717B" strokeWidth="3" fill="none" strokeLinecap="round" />
           <path d="M204 182 C 190 196, 170 176, 160 156 L 172 146 C 180 162, 190 172, 200 170 Z" fill="#8E919B" stroke={K} strokeWidth="3.5" strokeLinejoin="round" />
@@ -58,18 +58,18 @@ export function Rat({ size = 300, style }) {
         <path d="M120 106 L120 114" stroke={K} strokeWidth="2" />
         <path d="M102 101 Q 118 110 140 96" stroke={K} strokeWidth="3" fill="none" strokeLinecap="round" />
         <path d="M97 95 L72 88 M97 100 L70 102 M143 95 L168 88 M143 100 L170 102" stroke={K} strokeWidth="2" strokeLinecap="round" />
-        <g transform="translate(32 -21)" className="glove-l">
+        <g className="glove-l" style={gloveStyle(fist?.l)}><g transform="translate(32 -21)">
           <rect x="38" y="182" width="30" height="16" rx="5" fill="#FFFFFF" stroke={K} strokeWidth="3" />
           <path d="M30 172 C 26 148, 46 136, 62 142 C 78 148, 80 168, 70 182 L 38 184 C 32 182, 30 178, 30 172 Z" fill="#2E86DE" stroke={K} strokeWidth="4" strokeLinejoin="round" />
           <path d="M66 160 C 76 160, 78 172, 70 176" fill="none" stroke={K} strokeWidth="3" strokeLinecap="round" />
           <ellipse cx="44" cy="154" rx="7" ry="4" fill="#FFFFFF" opacity="0.6" transform="rotate(-30 44 154)" />
-        </g>
-        <g transform="translate(-32 -21)" className="glove-r">
+        </g></g>
+        <g className="glove-r" style={gloveStyle(fist?.r)}><g transform="translate(-32 -21)">
           <rect x="172" y="182" width="30" height="16" rx="5" fill="#FFFFFF" stroke={K} strokeWidth="3" />
           <path d="M210 172 C 214 148, 194 136, 178 142 C 162 148, 160 168, 170 182 L 202 184 C 208 182, 210 178, 210 172 Z" fill="#2E86DE" stroke={K} strokeWidth="4" strokeLinejoin="round" />
           <path d="M174 160 C 164 160, 162 172, 170 176" fill="none" stroke={K} strokeWidth="3" strokeLinecap="round" />
           <ellipse cx="196" cy="154" rx="7" ry="4" fill="#FFFFFF" opacity="0.6" transform="rotate(30 196 154)" />
-        </g>
+        </g></g>
       </svg>
     </div>
   );
@@ -114,7 +114,7 @@ const LOOKS = {
   ecureuil: { fur: '#C0642B', dark: '#9A4A1C', belly: '#F2D4AE', ears: 'tuft', snout: 'mouse', tail: 'bushy', bulk: 0.45, gloves: '#B8F000', shorts: '#5A2A2A', label: 'Écureuil challenger' },
 };
 
-export function Animal({ look, size = 300, style }) {
+export function Animal({ look, size = 300, style, fist }) {
   const L = LOOKS[look];
   const b = L.bulk;
   const sh = 52 + 26 * b; // demi-largeur des épaules
@@ -143,8 +143,8 @@ export function Animal({ look, size = 300, style }) {
         {b > 0.4 && <path d="M108 156 h24 M108 170 h24 M110 184 h20" stroke={L.dark} strokeWidth="2.5" strokeLinecap="round" />}
         <path d="M78 204 C 100 212, 140 212, 162 204 L 170 234 C 156 252, 136 254, 125 242 L 120 232 L 115 242 C 104 254, 84 252, 70 234 Z" fill={L.shorts} stroke={K} strokeWidth="4" strokeLinejoin="round" />
         <path d="M76 196 C 100 206, 140 206, 164 196 L 165 212 C 140 222, 100 222, 75 212 Z" fill="#F4EFE6" stroke={K} strokeWidth="3" strokeLinejoin="round" />
-        <g className="arm-l"><path d={arm(-1)} fill={L.fur} stroke={K} strokeWidth="4" strokeLinejoin="round" /></g>
-        <g className="arm-r"><path d={arm(1)} fill={L.fur} stroke={K} strokeWidth="4" strokeLinejoin="round" /></g>
+        <g className="arm-l" style={armStyle(fist?.l)}><path d={arm(-1)} fill={L.fur} stroke={K} strokeWidth="4" strokeLinejoin="round" /></g>
+        <g className="arm-r" style={armStyle(fist?.r)}><path d={arm(1)} fill={L.fur} stroke={K} strokeWidth="4" strokeLinejoin="round" /></g>
         {/* oreilles */}
         {L.ears === 'round' && (<>
           <circle cx="82" cy="46" r="26" fill={L.fur} stroke={K} strokeWidth="4" /><circle cx="82" cy="46" r="15" fill="#E9A5AE" />
@@ -188,30 +188,30 @@ export function Animal({ look, size = 300, style }) {
           <path d="M96 92 C 100 80, 140 80, 144 92 C 146 104, 94 104, 96 92 Z" fill="#F29A1F" stroke={K} strokeWidth="3" strokeLinejoin="round" />
           <path d="M100 96 Q 120 100 140 96" stroke={K} strokeWidth="2.5" fill="none" />
         </>)}
-        <g transform={`translate(${-6 - 10 * b} -6)`} className="glove-l">
+        <g className="glove-l" style={gloveStyle(fist?.l)}><g transform={`translate(${-6 - 10 * b} -6)`}>
           <rect x="38" y="182" width="30" height="16" rx="5" fill="#FFFFFF" stroke={K} strokeWidth="3" />
           <path d="M30 172 C 26 148, 46 136, 62 142 C 78 148, 80 168, 70 182 L 38 184 C 32 182, 30 178, 30 172 Z" fill={L.gloves} stroke={K} strokeWidth="4" strokeLinejoin="round" />
           <ellipse cx="44" cy="154" rx="7" ry="4" fill="#FFFFFF" opacity="0.6" transform="rotate(-30 44 154)" />
-        </g>
-        <g transform={`translate(${6 + 10 * b} -6)`} className="glove-r">
+        </g></g>
+        <g className="glove-r" style={gloveStyle(fist?.r)}><g transform={`translate(${6 + 10 * b} -6)`}>
           <rect x="172" y="182" width="30" height="16" rx="5" fill="#FFFFFF" stroke={K} strokeWidth="3" />
           <path d="M210 172 C 214 148, 194 136, 178 142 C 162 148, 160 168, 170 182 L 202 184 C 208 182, 210 178, 210 172 Z" fill={L.gloves} stroke={K} strokeWidth="4" strokeLinejoin="round" />
           <ellipse cx="196" cy="154" rx="7" ry="4" fill="#FFFFFF" opacity="0.6" transform="rotate(30 196 154)" />
-        </g>
+        </g></g>
       </svg>
     </div>
   );
 }
 
 // Choisit le bon dessin pour un adversaire.
-export function Fighter({ look, size = 300, style }) {
-  if (look === 'rat') return <Rat size={size} style={style} />;
+export function Fighter({ look, size = 300, style, fist }) {
+  if (look === 'rat') return <Rat size={size} style={style} fist={fist} />;
   if (look === 'cocorico') {
     // Le rival réutilise le rig du joueur (PRD), avec ses propres couleurs.
-    return <Poulet palier={3} pose="face" size={size} gloves="#2E86DE" pants="#5A2A2A" plumage={{ body: '#E0B25A', shade: '#B8862E', side: '#C99A40' }} style={style} />;
+    return <Poulet palier={3} pose="face" size={size} gloves="#2E86DE" pants="#5A2A2A" plumage={{ body: '#E0B25A', shade: '#B8862E', side: '#C99A40' }} style={style} fist={fist} />;
   }
   if (look === 'coach') {
-    return <Poulet palier={3} pose="face" size={size} gloves="#F2C230" pants="#F2542D" plumage={{ body: '#E39A4E', shade: '#C9783A', side: '#D08A44' }} style={{ filter: 'saturate(0.7)', ...style }} />;
+    return <Poulet palier={3} pose="face" size={size} gloves="#F2C230" pants="#F2542D" plumage={{ body: '#E39A4E', shade: '#C9783A', side: '#D08A44' }} style={{ filter: 'saturate(0.7)', ...style }} fist={fist} />;
   }
-  return <Animal look={look} size={size} style={style} />;
+  return <Animal look={look} size={size} style={style} fist={fist} />;
 }

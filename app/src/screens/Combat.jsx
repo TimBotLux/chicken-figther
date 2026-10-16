@@ -36,6 +36,7 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
   const [over, setOver] = useState(null);
   const slowUntil = useRef(0);
   const lastHit = useRef(null);
+  const lastBlock = useRef(-9999);
   const [touches, setTouches] = useState([]);
   const touchId = useRef(0);
   const addTouch = (x, y, side) => {
@@ -76,6 +77,7 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
           break;
         }
         case 'blocked':
+          lastBlock.current = eng.now;
           sfx.block();
           pop({ text: 'GARDE', sub: 'il bloque', x: 470, y: 110, size: 22, color: 'var(--cyan)' });
           break;
@@ -296,6 +298,35 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
       : `translateX(${dir * 10}px) rotate(${dir * 3}deg) scale(0.98)`;
     eAnim = 'none';
   }
+  // Gants de l'adversaire : armé pendant le télégraphe, bras tendu à l'impact,
+  // garde serrée quand il bloque, bras ballants quand il est sonné.
+  // l = gant à gauche de l'écran. Unités du dessin 240×300.
+  const G = (x, y, r = 0, k = 1) => ({ x, y, r, k });
+  let fist = null;
+  if (e.state === 'tele' && A) {
+    const p = Math.min(1, (now - e.teleStart) / Math.max(1, e.impactAt - e.teleStart));
+    fist = {
+      hookL: { l: G(-28 * p, -16 * p, -30 * p) },
+      hookR: { r: G(28 * p, -16 * p, 30 * p) },
+      jab: { r: G(10 * p, -12 * p, 0, 1 - 0.08 * p) },
+      body: { l: G(-12 * p, 22 * p) },
+      upper: { r: G(12 * p, 42 * p, 25 * p) },
+      charge: { l: G(-18 * p, -22 * p), r: G(18 * p, -22 * p) },
+    }[e.attack];
+  } else if ((e.state === 'recover' || e.state === 'gap' || e.state === 'stun') && now - e.impactAt < 280 && e.attack) {
+    fist = {
+      hookL: { l: G(62, 34, 35, 1.5) },
+      hookR: { r: G(-62, 34, -35, 1.5) },
+      jab: { r: G(-40, 40, 0, 1.6) },
+      body: { l: G(38, 55, 0, 1.4) },
+      upper: { r: G(-38, 10, -25, 1.5) },
+      charge: { l: G(36, 36, 0, 1.4), r: G(-36, 36, 0, 1.4) },
+    }[e.attack];
+  } else if (e.state === 'stun' || e.state === 'down') {
+    fist = { l: G(-12, 55, -25), r: G(12, 55, 25) };
+  } else if (now - lastBlock.current < 240) {
+    fist = { l: G(32, -42, 0, 1.05), r: G(-32, -42, 0, 1.05) };
+  }
   const impact = eHit && lh ? { x: lh.kind === 'special' ? 380 : lh.arm === 'l' ? 350 : 420, y: lh.kind === 'uppercut' ? 70 : 100 } : null;
 
   let pT = '';
@@ -327,7 +358,7 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
 
         {/* Adversaire : le cadrage recule pour les plus gros */}
         <div style={{ position: 'absolute', left: 422 - 110 * scale, top: 325 - 275 * scale, transformOrigin: '50% 100%', transform: eT, animation: eAnim, transition: justStruck ? 'transform 0.06s' : 'transform 0.1s', filter: `${eHit ? 'brightness(1.9) ' : ''}${telegraphing ? 'drop-shadow(0 0 8px var(--accent))' : ''}` || 'none' }}>
-          <Fighter look={opp.look} size={275 * scale} />
+          <Fighter look={opp.look} size={275 * scale} fist={fist} />
         </div>
         {e.state === 'stun' && (
           <div className="sfx-text" aria-hidden="true" style={{ position: 'absolute', left: 360, top: 40, fontSize: 26, color: 'var(--lime)' }}>ふらふら ★</div>

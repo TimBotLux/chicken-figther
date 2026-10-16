@@ -69,6 +69,19 @@ function geometry(p) {
 
 const INK = '#2A1408';
 
+// Mouvement d'un gant adverse vu de face : { x, y, r, k } en unités du dessin.
+// Le gant pivote autour de son propre centre ; le bras suit à moitié.
+export const gloveStyle = (m) => ({
+  transform: m ? `translate(${m.x}px, ${m.y}px) rotate(${m.r || 0}deg) scale(${m.k || 1})` : 'none',
+  transformBox: 'fill-box',
+  transformOrigin: '50% 50%',
+  transition: 'transform 90ms ease-out',
+});
+export const armStyle = (m) => ({
+  transform: m ? `translate(${m.x * 0.45}px, ${m.y * 0.45}px)` : 'none',
+  transition: 'transform 90ms ease-out',
+});
+
 // Vue de dos en combat : position des gants selon le coup lancé ou la garde.
 // Les gants avancent vers l'adversaire (haut et centre de l'image) et rapetissent
 // avec la distance ; les bras suivent à moitié pour rester attachés aux épaules.
@@ -121,7 +134,7 @@ const HACKLE = 'M98 64 C 92 80, 84 92, 70 100 L 82 102 L 76 110 L 92 106 L 92 11
 const COMB = 'M104 34 C 96 22, 100 12, 106 18 C 106 6, 116 2, 118 14 C 120 2, 132 2, 130 16 C 136 8, 146 14, 138 34 Z';
 const HEAD = 'M120 26 C 136 26, 146 40, 144 56 C 142 70, 132 80, 120 80 C 108 80, 98 70, 96 56 C 94 40, 104 26, 120 26 Z';
 
-export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = '#35303A', gloves = '#D7262B', plumage, style, className, strike = null, guard = null }) {
+export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = '#35303A', gloves = '#D7262B', plumage, style, className, strike = null, guard = null, fist = null }) {
   const p = Math.max(1, Math.min(5, Math.round(palier)));
   const g = geometry(p);
   const body = plumage?.body ?? '#D9894A';
@@ -191,9 +204,9 @@ export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = 
         <path d={g.torso} fill={body} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
         <path d={g.shadeFace} fill={shade} />
         <path d={g.L.up} fill={body} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
-        <path d={g.L.fo} fill={body} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
+        <path d={g.L.fo} fill={body} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" style={armStyle(fist?.l)} />
         <path d={g.R.up} fill={side2} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
-        <path d={g.R.fo} fill={shade} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
+        <path d={g.R.fo} fill={shade} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" style={armStyle(fist?.r)} />
         <path d={g.L.hl} stroke="#EDB27A" strokeWidth="3" fill="none" strokeLinecap="round" opacity={g.muscleOp} />
         <ellipse cx={g.L.dx} cy="120" rx={g.deltRx} ry={g.deltRy} fill={body} stroke={INK} strokeWidth="2.5" opacity={g.deltOp} />
         <ellipse cx={g.R.dx} cy="120" rx={g.deltRx} ry={g.deltRy} fill={side2} stroke={INK} strokeWidth="2.5" opacity={g.deltOp} />
@@ -236,17 +249,17 @@ export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = 
         <path d="M114 62 L126 62" stroke={INK} strokeWidth="1.4" />
         <path d="M113 70 C 106 84, 112 96, 118 92 C 120 86, 118 76, 117 72 Z" fill="#D7262B" stroke={INK} strokeWidth="2" strokeLinejoin="round" />
         <path d="M127 70 C 134 84, 128 96, 122 92 C 120 86, 122 76, 123 72 Z" fill="#B81F25" stroke={INK} strokeWidth="2" strokeLinejoin="round" />
-        <g transform={g.L.gT}>
+        <g style={gloveStyle(fist?.l)}><g transform={g.L.gT}>
           <rect x="38" y="182" width="30" height="16" rx="5" fill="#F4EFE6" stroke={INK} strokeWidth="2.5" />
           <path d="M30 172 C 26 148, 46 136, 62 142 C 78 148, 80 168, 70 182 L 38 184 C 32 182, 30 178, 30 172 Z" fill={gloves} stroke={INK} strokeWidth="2.8" strokeLinejoin="round" />
           <path d="M66 160 C 76 160, 78 172, 70 176" fill="none" stroke={INK} strokeWidth="2.2" strokeLinecap="round" />
           <ellipse cx="60" cy="172" rx="7" ry="4" fill="#FFFFFF" opacity="0.5" transform="rotate(-30 60 172)" />
-        </g>
-        <g transform={g.R.gT}>
+        </g></g>
+        <g style={gloveStyle(fist?.r)}><g transform={g.R.gT}>
           <rect x="172" y="182" width="30" height="16" rx="5" fill="#F4EFE6" stroke={INK} strokeWidth="2.5" />
           <path d="M210 172 C 214 148, 194 136, 178 142 C 162 148, 160 168, 170 182 L 202 184 C 208 182, 210 178, 210 172 Z" fill={gloves} stroke={INK} strokeWidth="2.8" strokeLinejoin="round" />
           <path d="M174 160 C 164 160, 162 172, 170 176" fill="none" stroke={INK} strokeWidth="2.2" strokeLinecap="round" />
-        </g>
+        </g></g>
       </svg>
     </div>
   );
