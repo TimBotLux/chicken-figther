@@ -143,3 +143,7 @@ button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
 @keyframes glowPulse { 50% { filter: drop-shadow(0 0 14px var(--accent)); } }
 @keyframes rise { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
 .rise { animation: rise 0.35s ease-out both; }
+
+/* Retour visuel sous le doigt en combat */
+@keyframes touchRing { from { transform: scale(0.3); opacity: 0.9; } to { transform: scale(1.4); opacity: 0; } }
+.touch-ring { position: absolute; width: 60px; height: 60px; border-radius: 50%; border: 4px solid; pointer-events: none; z-index: 7; animation: touchRing 0.45s ease-out forwards; }

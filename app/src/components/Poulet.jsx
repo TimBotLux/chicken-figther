@@ -69,6 +69,36 @@ function geometry(p) {
 
 const INK = '#2A1408';
 
+// Vue de dos en combat : position des gants selon le coup lancé ou la garde.
+// Les gants avancent vers l'adversaire (haut et centre de l'image) et rapetissent
+// avec la distance ; les bras suivent à moitié pour rester attachés aux épaules.
+function gloveMotion(p, side, strike, guard) {
+  const m = (p - 1) / 4;
+  const inward = 36 + 44 * m + 16; // distance du gant au centre (sh + 16)
+  const s = side === 'l' ? 1 : -1; // sens vers le centre
+  const active = strike && (strike.kind === 'special' || strike.arm === side);
+  let x = 0, y = 0, r = 0, k = 1;
+  if (active) {
+    ({ x, y, r, k } = {
+      jab: { x: 0.7 * inward, y: -72, r: 0, k: 0.7 },
+      crochet: { x: 1.05 * inward, y: -48, r: -40, k: 0.78 },
+      uppercut: { x: 0.5 * inward, y: -98, r: 18, k: 0.76 },
+      special: { x: 0.85 * inward, y: -86, r: 0, k: 0.66 },
+    }[strike.kind]);
+  } else if (strike) {
+    ({ x, y } = { x: 0.3 * inward, y: -22 }); // l'autre gant protège le visage
+  } else if (guard === 'high') {
+    ({ x, y } = { x: 0.42 * inward, y: -34 });
+  } else if (guard === 'low') {
+    ({ x, y } = { x: 0.32 * inward, y: 30 });
+  }
+  const gx = 120 - s * inward;
+  return {
+    glove: { transform: `translate(${s * x}px, ${y}px) rotate(${s * r}deg) scale(${k})`, transformOrigin: `${gx}px 85px`, transition: 'transform 70ms ease-out' },
+    arm: { transform: `translate(${s * x * 0.45}px, ${y * 0.45}px)`, transition: 'transform 70ms ease-out' },
+  };
+}
+
 function Glove({ transform, side, gloves, shine = true }) {
   if (side === 'L') {
     return (
@@ -91,7 +121,7 @@ const HACKLE = 'M98 64 C 92 80, 84 92, 70 100 L 82 102 L 76 110 L 92 106 L 92 11
 const COMB = 'M104 34 C 96 22, 100 12, 106 18 C 106 6, 116 2, 118 14 C 120 2, 132 2, 130 16 C 136 8, 146 14, 138 34 Z';
 const HEAD = 'M120 26 C 136 26, 146 40, 144 56 C 142 70, 132 80, 120 80 C 108 80, 98 70, 96 56 C 94 40, 104 26, 120 26 Z';
 
-export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = '#35303A', gloves = '#D7262B', plumage, style, className }) {
+export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = '#35303A', gloves = '#D7262B', plumage, style, className, strike = null, guard = null }) {
   const p = Math.max(1, Math.min(5, Math.round(palier)));
   const g = geometry(p);
   const body = plumage?.body ?? '#D9894A';
@@ -100,6 +130,8 @@ export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = 
   const wrap = { width: Math.round(size * 0.8), height: size, position: 'relative', ...style };
 
   if (pose === 'dos') {
+    const ml = gloveMotion(p, 'l', strike, guard);
+    const mr = gloveMotion(p, 'r', strike, guard);
     return (
       <div style={wrap} className={className}>
         <svg role="img" aria-label={`Le coq boxeur, palier ${p} sur 5 (${PALIER_NAMES[p]}), de dos en garde`} viewBox="0 0 240 300" style={{ width: '100%', height: '100%', display: 'block', overflow: 'visible' }}>
@@ -112,12 +144,12 @@ export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = 
           <path d={g.latR} fill={shade} />
           <path d={g.blades} stroke="#8A4A24" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity={g.muscleOp} />
           <path d="M120 104 L120 190" stroke="#8A4A24" strokeWidth="2.5" strokeLinecap="round" />
-          <g className="arm-l">
+          <g className="arm-l" style={ml.arm}>
             <path d={g.BL.fo} fill={body} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
             <path d={g.BL.up} fill={body} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
             <ellipse cx={g.BL.dx} cy="124" rx={g.deltRx} ry={g.deltRy} fill={body} stroke={INK} strokeWidth="2.5" opacity={g.deltOp} />
           </g>
-          <g className="arm-r">
+          <g className="arm-r" style={mr.arm}>
             <path d={g.BR.fo} fill={side2} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
             <path d={g.BR.up} fill={side2} stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
             <ellipse cx={g.BR.dx} cy="124" rx={g.deltRx} ry={g.deltRy} fill={side2} stroke={INK} strokeWidth="2.5" opacity={g.deltOp} />
@@ -137,8 +169,8 @@ export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = 
           <path d="M104 30 C 94 40, 94 62, 104 74 C 100 60, 100 42, 108 32 Z" fill={body} />
           <ellipse cx="96" cy="60" rx="4" ry="7" fill="#D7262B" stroke={INK} strokeWidth="1.5" />
           <ellipse cx="144" cy="60" rx="4" ry="7" fill="#D7262B" stroke={INK} strokeWidth="1.5" />
-          <g className="glove-l"><Glove transform={g.BL.gT} side="L" gloves={gloves} /></g>
-          <g className="glove-r"><Glove transform={g.BR.gT} side="R" gloves={gloves} /></g>
+          <g className="glove-l" style={ml.glove}><Glove transform={g.BL.gT} side="L" gloves={gloves} /></g>
+          <g className="glove-r" style={mr.glove}><Glove transform={g.BR.gT} side="R" gloves={gloves} /></g>
         </svg>
       </div>
     );

@@ -35,6 +35,14 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
   const [flash, setFlash] = useState(0);
   const [over, setOver] = useState(null);
   const slowUntil = useRef(0);
+  const lastHit = useRef(null);
+  const [touches, setTouches] = useState([]);
+  const touchId = useRef(0);
+  const addTouch = (x, y, side) => {
+    const id = ++touchId.current;
+    setTouches((t) => [...t.slice(-4), { id, x, y, side }]);
+    setTimeout(() => setTouches((t) => t.filter((v) => v.id !== id)), 450);
+  };
   const pointers = useRef(new Map());
   const palier = palierOf(game.stats).n;
   const gaucher = settings.gaucher;
@@ -58,6 +66,8 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
         case 'hit': {
           const [jp, fr] = ev.counter ? ['カウンター！', 'CONTRE !'] : HIT_TEXT[ev.kind];
           const big = ev.kind === 'special' || ev.counter;
+          lastHit.current = { arm: eng.player.action?.arm, kind: ev.kind };
+          vibrate(big ? 35 : 12, settings.vibration);
           (big ? sfx.bigHit : sfx.hit)();
           if (ev.kind === 'special') sfx.special();
           pop({ text: jp, sub: ev.crit ? `${fr} CRITIQUE !` : fr, x: 520 + Math.random() * 40, y: 120 + Math.random() * 40, size: big ? 52 : 40, r: 10 });
@@ -152,6 +162,7 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
     const p = toStage(e);
     const side = sideOf(p.x);
     const ptr = { side, x0: p.x, y0: p.y, t0: performance.now(), done: false, guard: false };
+    addTouch(p.x, p.y + 70, side);
     pointers.current.set(e.pointerId, ptr);
     if (side === 'def') {
       eng.setGuard('high');
@@ -275,13 +286,23 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
   if (e.state === 'stun') eAnim = 'wobble 0.35s ease-in-out infinite';
   if (e.state === 'down' || (eng.phase === 'over' && eng.result?.win)) { eT = 'translateY(120px) rotate(-75deg)'; eAnim = 'none'; }
   const eHit = now < e.flashUntil;
+  const lh = lastHit.current;
+  if (eHit && lh && e.state !== 'down' && e.state !== 'tele' && !justStruck) {
+    // Gant gauche (à gauche de l'écran) : la tête part vers la droite, et inversement.
+    const dir = lh.arm === 'l' ? 1 : -1;
+    eT = lh.kind === 'uppercut' ? 'translateY(-14px) rotate(0deg) scale(1.02)'
+      : lh.kind === 'special' ? 'translateY(-10px) scale(0.92)'
+      : lh.kind === 'crochet' ? `translateX(${dir * 20}px) rotate(${dir * 8}deg)`
+      : `translateX(${dir * 10}px) rotate(${dir * 3}deg) scale(0.98)`;
+    eAnim = 'none';
+  }
+  const impact = eHit && lh ? { x: lh.kind === 'special' ? 380 : lh.arm === 'l' ? 350 : 420, y: lh.kind === 'uppercut' ? 70 : 100 } : null;
 
   let pT = '';
   if (act?.type === 'dodge') pT = { left: 'translateX(-120px) rotate(-14deg)', right: 'translateX(120px) rotate(14deg)', back: 'translateY(46px) scale(0.9)' }[act.dir];
-  else if (act?.type === 'punch') pT = act.kind === 'uppercut' ? 'translateY(-40px) scale(0.94)' : act.kind === 'special' ? 'translateY(-60px) scale(0.9)' : `translateY(-26px) translateX(${act.arm === 'l' ? -14 : 14}px) scale(0.96)`;
+  else if (act?.type === 'punch') pT = act.kind === 'uppercut' ? 'translateY(-14px)' : act.kind === 'special' ? 'translateY(-22px) scale(0.97)' : `translateY(-8px) translateX(${act.arm === 'l' ? 8 : -8}px) rotate(${act.arm === 'l' ? 3 : -3}deg)`;
   else if (act?.type === 'stagger') pT = 'translateY(16px) rotate(5deg)';
-  else if (pl.guard === 'high') pT = 'translateY(6px) scale(0.98)';
-  else if (pl.guard === 'low') pT = 'translateY(18px) scale(0.97)';
+  else if (pl.guard === 'low') pT = 'translateY(10px)';
   if (eng.phase === 'kd_player' || (eng.phase === 'over' && !eng.result?.win)) pT = 'translateY(150px) rotate(70deg)';
 
   const scale = opp.size || 1;
@@ -328,8 +349,17 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
 
         {/* Le coq, vu de dos */}
         <div style={{ position: 'absolute', left: 300, top: 230, transformOrigin: '50% 80%', transform: pT, transition: 'transform 0.09s ease-out', filter: act?.type === 'stagger' ? 'drop-shadow(0 0 10px var(--accent))' : 'none' }}>
-          <Poulet palier={palier} pose="dos" size={300} gloves={game.equipment?.gants ? '#FF2E88' : '#D7262B'} pants={game.equipment?.short ? '#2B3A55' : '#35303A'} />
+          <Poulet
+            palier={palier} pose="dos" size={300}
+            strike={act?.type === 'punch' ? { kind: act.kind, arm: act.arm } : null}
+            guard={act ? null : pl.guard}
+            gloves={game.equipment?.gants ? '#FF2E88' : '#D7262B'} pants={game.equipment?.short ? '#2B3A55' : '#35303A'} />
         </div>
+        {impact && (
+          <Burst size={64} fill="var(--panel)" style={{ position: 'absolute', left: impact.x, top: impact.y, pointerEvents: 'none' }} textStyle={{ fontSize: 14, color: 'var(--accent)' }}>
+            {lh.kind === 'special' ? 'BEC!' : 'POW'}
+          </Burst>
+        )}
         {pl.guard && !act && <div className="tag" style={{ position: 'absolute', left: 372, top: 222, background: 'var(--cyan)' }}>{pl.guard === 'high' ? 'GARDE HAUTE' : 'GARDE BASSE'}</div>}
       </div>
       {flash > 0 && <div key={`flash-${flash}`} aria-hidden="true" style={{ position: 'absolute', inset: 0, background: 'var(--accent)', opacity: 0, animation: 'pop 0.3s ease-out reverse', pointerEvents: 'none' }} />}
@@ -392,6 +422,9 @@ export default function Combat({ oppId, exhibition = false, weigh = 'ok', resume
         <span className="t" style={{ position: 'relative', display: 'block', fontSize: 14, lineHeight: 1.05, color: specialPct >= 100 ? 'var(--on-accent)' : 'var(--ink)' }}>COUP<br />DE BEC</span>
       </button>
 
+      {touches.map((t) => (
+        <div key={t.id} aria-hidden="true" className="touch-ring" style={{ left: t.x - 30, top: t.y - 30, borderColor: t.side === 'atk' ? 'var(--accent)' : 'var(--cyan)' }} />
+      ))}
       <Popups items={popups} />
 
       {/* Tutoriel : Coach Ergot guide le sparring */}
