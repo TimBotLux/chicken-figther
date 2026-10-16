@@ -116,6 +116,9 @@ export const SKILLS = [
   { id: 'contreur', name: 'Contreur', perk: 'Riposte éclair', desc: 'Fenêtre de contre +0,4 s et contres +25 %' },
 ];
 
+// Durée d'un round de combat (le PRD prévoyait 60 s ; raccourci pour des combats plus nerveux).
+export const ROUND_MS = 40000;
+
 export const DIFFICULTY = {
   facile: { label: 'Facile', tele: 1.4, dmg: 0.7, idle: 1.15, perfect: 200 },
   normal: { label: 'Normal', tele: 1, dmg: 1, idle: 1, perfect: 150 },

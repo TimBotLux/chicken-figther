@@ -1,9 +1,7 @@
 // Moteur de combat sur rail : le coq fait toujours face à l'adversaire, esquive à gauche /
 // à droite ou recule. Toutes les fenêtres de timing sont en millisecondes, indépendantes
 // de la fréquence d'images (PRD : « Fenêtres de timing »).
-import { ATTACKS, DIFFICULTY, ECONOMY } from '../data/data.js';
-
-const ROUND_MS = 60000;
+import { ATTACKS, DIFFICULTY, ECONOMY, ROUND_MS } from '../data/data.js';
 const rand = (a, b) => a + Math.random() * (b - a);
 
 const PUNCHES = {

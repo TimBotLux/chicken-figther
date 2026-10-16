@@ -48,7 +48,7 @@ Netlify fournit le HTTPS, nécessaire pour installer la PWA sur un téléphone.
 - **Carte des catégories** : 6 catégories aux poids de la boxe pro ; mouche et plume jouables (MVP), 8 adversaires dont 2 champions, combats d'exhibition pour les challengers battus.
 - **Salle** : 3 mini-jeux (développé couché, sac de frappe, corde à sauter), énergie (3 séances saines), fatigue, coût des séances (1re gratuite), simulation rapide à 70 %, boutique réduite.
 - **Pesée** : fourchettes en kg, malus « trop lourd » (−50 % de prime, −15 % d'endurance) et « trop léger » (−15 % de résistance).
-- **Combat sur rail** : moitié gauche défense (garde haute/basse, esquives, recul), moitié droite attaque (jab, crochet, uppercut), coup de bec, endurance, télégraphes visuels + sonores + vibration, esquive parfaite et contre, knock-downs, KO / KO technique / décision, rounds de 60 s, coin entre les rounds (15 s), phase enragée des champions.
+- **Combat sur rail** : moitié gauche défense (garde haute/basse, esquives, recul), moitié droite attaque (jab, crochet, uppercut), coup de bec, endurance, télégraphes visuels + sonores + vibration, esquive parfaite et contre, knock-downs, KO / KO technique / décision, rounds de 40 s (`ROUND_MS` dans `data.js`), coin entre les rounds (15 s), phase enragée des champions.
 - **Progression** : XP, niveaux, compétences (Cogneur, Esquiveur, Contreur), 5 paliers de musculature du coq, ceintures.
 - **Options** : thème (suit le téléphone par défaut), difficulté, assistance au timing, mode gaucher, zones de gestes, sons, vibrations, secousses/ralentis, calibrage de la latence tactile.
 - **Sauvegarde** : 3 emplacements locaux, sauvegarde automatique entre les rounds et reprise d'un combat interrompu.
