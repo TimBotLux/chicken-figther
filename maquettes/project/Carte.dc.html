@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Carte des catégories</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&amp;family=Zen+Kaku+Gothic+New:wght@700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 844px; height: 390px; box-sizing: border-box; padding: 8px; background: {{paper}}; font-family: 'Zen Kaku Gothic New', sans-serif; color: {{ink}}; display: flex; flex-direction: column; gap: 8px">
+
+<div style="height: 50px; flex-shrink: 0; box-sizing: border-box; background: {{ink}}; color: {{panel}}; padding: 0 16px; display: flex; align-items: center; gap: 16px">
+<div style="font-family: 'Dela Gothic One', sans-serif; font-size: 22px; color: {{accent}}; transform: skewX(-8deg)">LA ROUTE DES CEINTURES</div>
+<div style="flex: 1"></div>
+<div style="font-family: 'Dela Gothic One', sans-serif; font-size: 13px">0 / 6 CEINTURES · RÉPUTATION 120</div>
+</div>
+
+<div style="height: 128px; flex-shrink: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="6">
+<div style="position: relative; border: {{c.border}}; background-color: {{panel}}; background-image: {{c.bg}}; background-size: {{c.bgSize}}; padding: 8px 6px; display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center; overflow: hidden">
+<svg aria-hidden="true" width="70" height="32" viewBox="0 0 70 32"><rect x="1.5" y="10" width="67" height="12" fill="{{c.belt}}" stroke="{{ink}}" stroke-width="2.5"></rect><ellipse cx="35" cy="16" rx="15" ry="13" fill="{{c.plate}}" stroke="{{ink}}" stroke-width="2.5"></ellipse></svg>
+<div style="background: {{panel}}; padding: 0 4px; font-family: 'Dela Gothic One', sans-serif; font-size: 12px; line-height: 1.25">{{c.name}}</div>
+<div style="background: {{ink}}; color: {{panel}}; padding: 0 5px; font-family: 'Dela Gothic One', sans-serif; font-size: 11px; line-height: 1.35">{{c.kg}}</div>
+<div style="background: {{panel}}; padding: 0 4px; font-size: 11px; line-height: 1.2">{{c.beltName}}</div>
+<div style="flex: 1"></div>
+<div style="padding: 0 6px; background: {{c.stateBg}}; color: {{c.stateInk}}; font-family: 'Dela Gothic One', sans-serif; font-size: 11px">{{c.state}}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="flex: 1; border: 3px solid {{ink}}; background: {{panel}}; padding: 8px 12px; display: flex; flex-direction: column; gap: 6px; min-height: 0">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<div style="font-family: 'Dela Gothic One', sans-serif; font-size: 18px">POIDS MOUCHE</div>
+<div style="font-size: 13px">2 combats sur 4</div>
+</div>
+<div style="display: flex; align-items: stretch; gap: 8px; flex: 1">
+<sc-for list="{{fights}}" as="f" hint-placeholder-count="3">
+<div style="flex: 1; border: 3px solid {{ink}}; background-color: {{f.bg}}; background-image: {{f.tone}}; background-size: 6px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px">
+<div style="background: {{panel}}; padding: 0 6px; font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.3">{{f.name}}</div>
+<div style="background: {{ink}}; color: {{panel}}; padding: 0 6px; font-size: 12px">{{f.state}}</div>
+</div>
+</sc-for>
+<div style="flex: 1.3; position: relative; border: 3px dashed {{ink}}; background-color: {{panel}}; background-image: {{toneBg}}; background-size: 6px 6px; display: flex; align-items: center; gap: 6px; padding: 0 8px; overflow: hidden">
+<div style="width: 58px; height: 72px; flex-shrink: 0; filter: {{silhouette}}">
+<dc-import name="Rat" size="72" hint-size="58px,72px"></dc-import>
+</div>
+<div>
+<div style="background: {{panel}}; padding: 0 4px; font-family: 'Dela Gothic One', sans-serif; font-size: 15px; line-height: 1.3">CHAMPION ???</div>
+<div style="background: {{panel}}; padding: 0 4px; font-size: 12px">Verrouillé</div>
+</div>
+<div aria-hidden="true" style="position: absolute; right: 6px; top: 4px; transform: rotate(10deg); font-family: 'Dela Gothic One', sans-serif; font-size: 18px; color: {{accent}}; text-shadow: {{outline}}">ドキドキ</div>
+</div>
+<a href="Salle.dc.html" style="width: 150px; border: 3px solid {{ink}}; background: {{accent}}; color: {{onAccent}}; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; font-family: 'Dela Gothic One', sans-serif; font-size: 16px; line-height: 1.25; box-shadow: 4px 4px 0 {{cyan}}">À L'ENTRAÎNEMENT !</a>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["clair","sombre"],"default":"clair"},"$preview":{"width":844,"height":390}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = this.props.theme === 'sombre';
+    const T = dark
+      ? { paper: '#0B0B0D', panel: '#17171A', ink: '#F2F2F2', tone: 'rgba(242,242,242,0.2)', accent: '#FF3D96', onAccent: '#0B0B0D', cyan: '#00E5FF', lime: '#C6FF00' }
+      : { paper: '#F4F1EA', panel: '#FFFFFF', ink: '#111111', tone: 'rgba(17,17,17,0.25)', accent: '#FF2E88', onAccent: '#111111', cyan: '#00C2EB', lime: '#B8F000' };
+    const o = (c, w) => `-${w}px -${w}px 0 ${c}, ${w}px -${w}px 0 ${c}, -${w}px ${w}px 0 ${c}, ${w}px ${w}px 0 ${c}`;
+    const toneBg = `radial-gradient(${T.tone} 1.2px, transparent 1.4px)`;
+    const cyanTone = `radial-gradient(${dark ? 'rgba(0,229,255,0.45)' : 'rgba(0,194,235,0.5)'} 1.3px, transparent 1.5px)`;
+    const speed = `repeating-conic-gradient(from 0deg at 50% 40%, ${T.ink} 0deg 0.9deg, ${T.lime} 0.9deg 7deg)`;
+    const cat = (name, kg, beltName, belt, current) => current
+      ? { name, kg, beltName, belt, plate: T.accent, state: 'EN COURS', stateBg: T.accent, stateInk: T.onAccent, border: `5px solid ${T.accent}`, bg: speed, bgSize: 'auto' }
+      : { name, kg, beltName, belt, plate: T.panel, state: 'VERROUILLÉ', stateBg: T.ink, stateInk: T.panel, border: `3px solid ${T.ink}`, bg: toneBg, bgSize: '6px 6px' };
+    return {
+      ...T,
+      toneBg,
+      outline: o(T.ink, 1.5),
+      silhouette: dark ? 'brightness(0) invert(1) opacity(0.8)' : 'brightness(0)',
+      cats: [
+        cat('POIDS MOUCHE', '≤ 50,8 KG', 'Ceinture de Grain', '#C9A227', true),
+        cat('POIDS PLUME', '≤ 57,2 KG', 'Ceinture de Plume', '#FFFFFF'),
+        cat('POIDS LÉGER', '≤ 61,2 KG', 'Ceinture de Paille', '#E8C55A'),
+        cat('POIDS MOYEN', '≤ 72,6 KG', 'Ceinture de Foin', '#9DB36A'),
+        cat('MI-LOURD', '≤ 79,4 KG', 'Ceinture du Fer à cheval', '#8E919B'),
+        cat('POIDS LOURD', '+ 90,7 KG', 'Ceinture de l’Épi d’Or', '#D4A100')
+      ],
+      fights: [
+        { name: 'SOURIS', state: '✓ Gagné', bg: T.panel, tone: cyanTone },
+        { name: 'MOINEAU', state: '✓ Gagné', bg: T.panel, tone: cyanTone },
+        { name: 'HAMSTER', state: 'Prochain', bg: T.lime, tone: 'none' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Coin entre les rounds</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&amp;family=Zen+Kaku+Gothic+New:wght@700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 844px; height: 390px; box-sizing: border-box; padding: 8px; background: {{paper}}; font-family: 'Zen Kaku Gothic New', sans-serif; color: {{ink}}; display: flex; flex-direction: column; gap: 8px">
+
+<div style="height: 50px; flex-shrink: 0; box-sizing: border-box; background: {{ink}}; color: {{panel}}; padding: 0 8px 0 16px; display: flex; align-items: center; gap: 14px">
+<div style="font-family: 'Dela Gothic One', sans-serif; font-size: 26px; color: {{accent}}; transform: skewX(-8deg)">AU COIN !</div>
+<div style="flex: 1; font-size: 15px">Fin du round 1 · contre Rat « Rattrapage »</div>
+<div style="position: relative; width: 56px; height: 56px; margin-top: 4px; filter: {{glowFilter}}">
+<svg aria-hidden="true" viewBox="0 0 70 70" style="position: absolute; left: 0; top: 0; width: 56px; height: 56px"><polygon points="69,35 53.5,42.7 59,59 42.7,53.5 35,69 27.3,53.5 11,59 16.5,42.7 1,35 16.5,27.3 11,11 27.3,16.5 35,1 42.7,16.5 59,11 53.5,27.3" fill="{{cyan}}" stroke="{{panel}}" stroke-width="3" stroke-linejoin="round"></polygon></svg>
+<div style="position: absolute; left: 0; top: 19px; width: 56px; text-align: center; font-family: 'Dela Gothic One', sans-serif; font-size: 16px; line-height: 1; color: #111111">0:11</div>
+</div>
+</div>
+
+<div style="flex: 1; display: flex; gap: 8px; min-height: 0">
+
+<div style="width: 350px; display: flex; flex-direction: column; gap: 8px">
+<div style="flex: 1; position: relative; border: 3px solid {{ink}}; overflow: hidden; background: {{focusBg}}">
+<div style="position: absolute; left: 12px; bottom: 12px; filter: drop-shadow(4px 4px 0 {{ink}})">
+<dc-import name="Coach" size="124" bg="{{coachBg}}" hint-size="124px,124px"></dc-import>
+</div>
+<div style="position: absolute; left: 150px; top: 12px; width: 160px; background: {{panel}}; border: 3px solid {{ink}}; border-radius: 50% / 42%; padding: 14px 14px; box-sizing: border-box; text-align: center">
+<div style="font-size: 14px; line-height: 1.3">Il baisse sa garde après deux crochets. Esquive, puis contre !</div>
+</div>
+<svg aria-hidden="true" viewBox="0 0 40 40" style="position: absolute; left: 128px; top: 100px; width: 40px; height: 40px"><path d="M36 2 L 4 36 L 22 4 Z" fill="{{panel}}" stroke="{{ink}}" stroke-width="3" stroke-linejoin="round"></path><path d="M22 2 L 36 2" stroke="{{panel}}" stroke-width="5"></path></svg>
+<div style="position: absolute; right: 0; top: 0; bottom: 0; width: 30px; background: {{ink}}; color: {{panel}}; writing-mode: vertical-rl; display: flex; align-items: center; justify-content: center; font-family: 'Dela Gothic One', sans-serif; font-size: 13px; letter-spacing: 2px">COACH ERGOT</div>
+</div>
+<div style="height: 62px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<div style="border: 3px solid {{ink}}; background: {{panel}}; text-align: center; display: flex; flex-direction: column; justify-content: center"><div style="font-family: 'Dela Gothic One', sans-serif; font-size: 22px; line-height: 1.1">18</div><div style="font-size: 12px">coups touchés</div></div>
+<div style="border: 3px solid {{ink}}; background: {{accent}}; color: {{onAccent}}; text-align: center; display: flex; flex-direction: column; justify-content: center"><div style="font-family: 'Dela Gothic One', sans-serif; font-size: 22px; line-height: 1.1">3</div><div style="font-size: 12px">esquives parfaites</div></div>
+<div style="border: 3px solid {{ink}}; background-color: {{panel}}; background-image: {{toneBg}}; background-size: 6px 6px; text-align: center; display: flex; flex-direction: column; justify-content: center"><div style="font-family: 'Dela Gothic One', sans-serif; font-size: 22px; line-height: 1.1">1</div><div style="font-size: 12px; background: {{panel}}; align-self: center; padding: 0 4px">knock-down</div></div>
+</div>
+</div>
+
+<div style="flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 0 10px">
+<sc-for list="{{choices}}" as="c" hint-placeholder-count="3">
+<button style="flex: 1; border: 3px solid {{ink}}; background-color: {{c.bg}}; background-image: {{c.tone}}; background-size: 6px 6px; transform: skewX(-8deg); display: flex; align-items: center; padding: 0; cursor: pointer; font-family: inherit; color: {{ink}}">
+<div style="transform: skewX(8deg); display: flex; align-items: center; gap: 12px; padding: 0 18px; width: 100%">
+<div style="width: 44px; height: 44px; flex-shrink: 0; background: {{panel}}; border: 3px solid {{ink}}; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="{{c.iconFill}}" stroke="{{ink}}" stroke-width="2" stroke-linejoin="round"><path d="{{c.icon}}"></path></svg>
+</div>
+<div style="flex: 1; text-align: left; background: {{panel}}; border: 2.5px solid {{ink}}; padding: 2px 10px">
+<div style="font-family: 'Dela Gothic One', sans-serif; font-size: 18px; line-height: 1.2">{{c.title}}</div>
+<div style="font-size: 13px">{{c.text}}</div>
+</div>
+</div>
+</button>
+</sc-for>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["clair","sombre"],"default":"clair"},"$preview":{"width":844,"height":390}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = this.props.theme === 'sombre';
+    const T = dark
+      ? { paper: '#0B0B0D', panel: '#17171A', ink: '#F2F2F2', tone: 'rgba(242,242,242,0.18)', accent: '#FF3D96', onAccent: '#0B0B0D', cyan: '#00E5FF', lime: '#C6FF00', glowFilter: 'drop-shadow(0 0 10px rgba(0,229,255,0.8))' }
+      : { paper: '#F4F1EA', panel: '#FFFFFF', ink: '#111111', tone: 'rgba(17,17,17,0.22)', accent: '#FF2E88', onAccent: '#111111', cyan: '#00C2EB', lime: '#B8F000', glowFilter: 'none' };
+    const toneBg = `radial-gradient(${T.tone} 1.3px, transparent 1.5px)`;
+    const redTone = `radial-gradient(${dark ? 'rgba(255,61,150,0.5)' : 'rgba(255,46,136,0.45)'} 1.4px, transparent 1.6px)`;
+    const cyanTone = `radial-gradient(${dark ? 'rgba(0,229,255,0.45)' : 'rgba(0,194,235,0.5)'} 1.4px, transparent 1.6px)`;
+    return {
+      ...T,
+      toneBg,
+      coachBg: dark ? '#00A3BF' : '#7FE8FF',
+      focusBg: `repeating-conic-gradient(from 0deg at 22% 62%, ${T.ink} 0deg 0.7deg, ${T.panel} 0.7deg 6deg)`,
+      choices: [
+        { title: 'SOIGNER', text: '+25 % de vie', bg: T.panel, tone: redTone, iconFill: T.accent, icon: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z' },
+        { title: 'RÉCUPÉRER', text: '+40 % d’endurance', bg: T.panel, tone: cyanTone, iconFill: T.cyan, icon: 'M13 2L4 14h7l-1 8 9-12h-7z' },
+        { title: 'ÉCOUTER LE COACH', text: 'Télégraphes plus longs au prochain round', bg: T.lime, tone: 'none', iconFill: T.panel, icon: 'M4 5h16v11H9l-5 4z' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

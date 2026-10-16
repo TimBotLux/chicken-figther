@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Pesée</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&amp;family=Zen+Kaku+Gothic+New:wght@700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 844px; height: 390px; box-sizing: border-box; padding: 8px; background: {{paper}}; font-family: 'Zen Kaku Gothic New', sans-serif; color: {{ink}}; display: flex; flex-direction: column; gap: 8px">
+
+<div style="height: 50px; flex-shrink: 0; box-sizing: border-box; background: {{ink}}; color: {{panel}}; padding: 0 16px; display: flex; align-items: center; gap: 16px">
+<div style="font-family: 'Dela Gothic One', sans-serif; font-size: 26px; color: {{accent}}; transform: skewX(-8deg)">LA PESÉE !</div>
+<div style="font-size: 15px">Poids mouche (limite 50,8 kg) · combat pour la Ceinture de Grain</div>
+</div>
+
+<div style="flex: 1; position: relative; border: 3px solid {{ink}}; overflow: hidden; min-height: 0">
+<div aria-hidden="true" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; clip-path: polygon(0 0, 54% 0, 46% 100%, 0 100%); background: {{leftBg}}"></div>
+<div aria-hidden="true" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; clip-path: polygon(54% 0, 100% 0, 100% 100%, 46% 100%); background-color: {{accent}}; background-image: {{darkTone}}; background-size: 7px 7px"></div>
+<svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%"><path d="M54 0 L46 100" stroke="{{ink}}" vector-effect="non-scaling-stroke" style="stroke-width: 6px"></path></svg>
+
+<div style="position: absolute; left: 70px; bottom: -34px">
+<dc-import name="Poulet" pose="face" palier="2" size="220" hint-size="176px,220px"></dc-import>
+</div>
+<div style="position: absolute; right: 70px; bottom: -34px">
+<dc-import name="Rat" size="220" hint-size="176px,220px"></dc-import>
+</div>
+
+<div style="position: absolute; left: 10px; top: 10px; background: {{panel}}; border: 3px solid {{ink}}; box-shadow: 4px 4px 0 {{accent}}">
+<div style="background: {{ink}}; color: {{panel}}; font-family: 'Dela Gothic One', sans-serif; font-size: 12px; padding: 0 8px">POULET</div>
+<div style="font-family: 'Dela Gothic One', sans-serif; font-size: 24px; padding: 0 10px; line-height: 1.3">{{weightLabel}}</div>
+</div>
+<div style="position: absolute; right: 0; top: 0; bottom: 0; width: 34px; background: {{ink}}; color: {{panel}}; writing-mode: vertical-rl; display: flex; align-items: center; justify-content: center; font-family: 'Dela Gothic One', sans-serif; font-size: 14px; letter-spacing: 2px">RAT « RATTRAPAGE » · 50,7 KG</div>
+
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 36px; text-align: center; font-family: 'Dela Gothic One', sans-serif; font-size: 72px; line-height: 1; color: {{lime}}; text-shadow: {{outlineBig}}; transform: rotate(-6deg)">VS</div>
+<div aria-hidden="true" style="position: absolute; left: 470px; top: 18px; writing-mode: vertical-rl; font-family: 'Dela Gothic One', sans-serif; font-size: 26px; line-height: 1; letter-spacing: -2px; color: {{cyan}}; text-shadow: {{outline}}">ゴゴゴゴ</div>
+</div>
+
+<div style="height: 94px; flex-shrink: 0; display: flex; gap: 8px">
+<div style="flex: 1; border: 3px solid {{ink}}; background: {{panel}}; padding: 6px 12px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; font-size: 11px"><span>47 kg</span><span>Poids mouche : 49,0 – 50,8 kg</span><span>53 kg</span></div>
+<div style="position: relative; height: 22px; border: 3px solid {{ink}}; box-sizing: border-box; background: {{panel}}">
+<div style="position: absolute; left: 33.3%; width: 30%; top: 0; bottom: 0; background-color: {{cyan}}; background-image: {{toneBg}}; background-size: 5px 5px"></div>
+<div style="position: absolute; left: 61.7%; top: 0; bottom: 0; width: 3px; background: {{accent}}"></div>
+<div style="position: absolute; left: {{markerPos}}; top: -9px; width: 5px; height: 34px; margin-left: -2px; background: {{ink}}"></div>
+</div>
+<div style="font-size: 13px">{{consequence}}</div>
+</div>
+<div style="width: 170px; border: 3px solid {{ink}}; background: {{panel}}; display: flex; align-items: center; justify-content: center">
+<div style="border: 4px solid {{stampColor}}; color: {{stampColor}}; padding: 2px 10px; font-family: 'Dela Gothic One', sans-serif; font-size: 20px; line-height: 1.2; transform: rotate(-8deg)">{{stamp}}</div>
+</div>
+<div style="width: 170px; display: flex; flex-direction: column; gap: 8px">
+<a href="Main.dc.html" style="flex: 1; border: 3px solid {{ink}}; filter: {{glowFilter}}; box-shadow: 3px 3px 0 {{lime}}; background: {{accent}}; color: {{onAccent}}; text-decoration: none; display: flex; align-items: center; justify-content: center; font-family: 'Dela Gothic One', sans-serif; font-size: 20px">AU RING !</a>
+<a href="Salle.dc.html" style="height: 34px; border: 3px solid {{ink}}; background: {{panel}}; color: {{ink}}; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 13px">Retour à la salle</a>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["clair","sombre"],"default":"clair"},"weight":{"editor":"range","min":47,"max":53,"step":0.1,"unit":"kg","default":50.2},"$preview":{"width":844,"height":390}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = this.props.theme === 'sombre';
+    const T = dark
+      ? { paper: '#0B0B0D', panel: '#17171A', ink: '#F2F2F2', tone: 'rgba(242,242,242,0.25)', accent: '#FF3D96', onAccent: '#0B0B0D', cyan: '#00E5FF', lime: '#C6FF00', glowFilter: 'drop-shadow(0 0 12px rgba(255,61,150,0.8))' }
+      : { paper: '#F4F1EA', panel: '#FFFFFF', ink: '#111111', tone: 'rgba(17,17,17,0.3)', accent: '#FF2E88', onAccent: '#111111', cyan: '#00C2EB', lime: '#B8F000', glowFilter: 'none' };
+    const o = (c, w) => `-${w}px -${w}px 0 ${c}, ${w}px -${w}px 0 ${c}, -${w}px ${w}px 0 ${c}, ${w}px ${w}px 0 ${c}`;
+    const w = Math.max(47, Math.min(53, Number(this.props.weight ?? 50.2)));
+    const pos = ((w - 47) / 6) * 100;
+    let stamp = 'VALIDÉ !', stampColor = T.ink, consequence = 'Dans la fourchette : aucun malus.';
+    if (w > 50.8) { stamp = 'TROP LOURD !'; stampColor = T.accent; consequence = 'Au-dessus de 50,8 kg : −50 % sur la prime et −15 % d’endurance.'; }
+    else if (49.0 > w) { stamp = 'TROP LÉGER !'; stampColor = T.accent; consequence = 'Sous 49,0 kg : −15 % de résistance pour ce combat.'; }
+    return {
+      ...T,
+      outline: o(T.ink, 2),
+      outlineBig: o(T.ink, 3) + `, 6px 6px 0 ${T.cyan}`,
+      toneBg: `radial-gradient(${T.tone} 1px, transparent 1.2px)`,
+      darkTone: `radial-gradient(rgba(0,0,0,0.45) 1.6px, transparent 1.8px)`,
+      leftBg: `repeating-conic-gradient(from 0deg at 20% 62%, ${T.ink} 0deg 0.8deg, ${T.panel} 0.8deg 6deg)`,
+      weightLabel: w.toFixed(1).replace('.', ',') + ' kg',
+      markerPos: pos.toFixed(1) + '%',
+      stamp, stampColor, consequence
+    };
+  }
+}
+</script>
+</body>
+</html>

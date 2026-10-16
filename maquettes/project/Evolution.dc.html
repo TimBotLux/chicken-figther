@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Évolution du coq</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&amp;family=Comic+Neue:wght@700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1280px; height: 400px; box-sizing: border-box; padding: 8px; background: #FFFDF6; font-family: 'Comic Neue', sans-serif; color: #111111; display: flex; flex-direction: column; gap: 8px">
+
+<div style="height: 52px; flex-shrink: 0; box-sizing: border-box; background: #111111; border: 3.5px solid #111111; padding: 0 16px; display: flex; align-items: center; gap: 16px">
+<div style="font-family: 'Bangers', sans-serif; font-size: 32px; letter-spacing: 2px; color: #FF2E88; transform: skewX(-8deg)">ÉVOLUTION DU COQ</div>
+<div style="flex: 1; color: #FFFDF6; font-size: 16px">La silhouette change à chaque palier de statistiques gagné à la salle</div>
+</div>
+
+<div style="flex: 1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; min-height: 0">
+<sc-for list="{{steps}}" as="e" hint-placeholder-count="5">
+<div style="position: relative; border: {{e.border}}; overflow: hidden; background-color: #FFFDF6; background-image: {{e.bg}}; background-size: {{e.bgSize}}; display: flex; align-items: flex-end; justify-content: center">
+<dc-import name="Poulet" palier="{{e.p}}" pose="face" size="262" hint-size="210px,262px"></dc-import>
+<div style="position: absolute; left: 8px; top: 8px; background: #FFFDF6; border: 3px solid #111111; box-shadow: 3px 3px 0 #111111">
+<div style="background: #FF2E88; color: #111111; font-family: 'Bangers', sans-serif; font-size: 16px; letter-spacing: 1.5px; padding: 0 8px">PALIER {{e.p}}</div>
+<div style="padding: 1px 8px 3px">
+<div style="font-family: 'Bangers', sans-serif; font-size: 19px; letter-spacing: 1px; line-height: 1.1">{{e.name}}</div>
+<div style="font-size: 12px">{{e.when}}</div>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tone = 'radial-gradient(rgba(17,17,17,0.18) 1.2px, transparent 1.4px)';
+    const speed = 'repeating-conic-gradient(from 0deg at 50% 40%, #111111 0deg 1deg, #B8F000 1deg 8deg)';
+    const cyan = 'radial-gradient(rgba(0,194,235,0.5) 1.3px, transparent 1.5px)';
+    const step = (p, name, when, last) => ({ p, name, when, bg: last ? speed : (p % 2 ? tone : cyan), bgSize: last ? 'auto' : '6px 6px', border: last ? '5px solid #FF2E88' : '3.5px solid #111111' });
+    return {
+      steps: [
+        step(1, 'MAIGRICHON', 'Début de carrière · poids mouche'),
+        step(2, 'SEC', 'Fin des poids mouche'),
+        step(3, 'ATHLÉTIQUE', 'Poids plume et léger'),
+        step(4, 'MUSCLÉ', 'Poids moyen et mi-lourd'),
+        step(5, 'BODYBUILDÉ', 'Poids lourd · champion', true)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
