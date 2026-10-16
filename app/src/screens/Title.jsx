@@ -6,12 +6,14 @@ import { Rat } from '../components/Characters.jsx';
 import { GearIcon } from '../components/Ui.jsx';
 import { sfx } from '../game/sfx.js';
 import { useInstall } from '../game/pwa.js';
+import { autoFullscreen, enterFullscreen, fullscreenSupported, isTouchDevice, useFullscreen } from '../game/fullscreen.js';
 
 // Une seule carrière, sauvegardée automatiquement (emplacement 1).
 const SLOT = 1;
 
 export default function Title() {
-  const { loadSlot, setModal } = useGame();
+  const { loadSlot, setModal, settings } = useGame();
+  const fullscreen = useFullscreen();
   const save = readSlots().find((s) => s.n === SLOT)?.game;
   const p = save ? palierOf(save.stats) : null;
   const install = useInstall();
@@ -38,7 +40,7 @@ export default function Title() {
       <div style={{ position: 'absolute', right: 30, top: 70, width: 320, display: 'flex', flexDirection: 'column', gap: 14 }}>
         <button
           className="btn btn-accent"
-          onClick={() => { sfx.click(); loadSlot(SLOT); }}
+          onClick={() => { sfx.click(); autoFullscreen(settings.fullscreen); loadSlot(SLOT); }}
           style={{ minHeight: 120, flexDirection: 'column', gap: 6, transform: 'skewX(-6deg)', boxShadow: '6px 6px 0 var(--cyan)' }}
         >
           <span className="t" style={{ fontSize: 44 }}>JOUER !</span>
@@ -51,6 +53,9 @@ export default function Title() {
         <button className="btn" onClick={() => setModal('options')} style={{ gap: 8 }}>
           <GearIcon color="var(--ink)" /> OPTIONS
         </button>
+        {!fullscreen && isTouchDevice() && fullscreenSupported() && (
+          <button className="btn btn-cyan" onClick={enterFullscreen}>⛶ PLEIN ÉCRAN</button>
+        )}
         {install.canPrompt && (
           <button className="btn btn-lime" onClick={install.prompt}>📲 INSTALLER L’APPLICATION</button>
         )}

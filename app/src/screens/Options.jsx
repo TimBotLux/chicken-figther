@@ -3,6 +3,7 @@ import { useGame } from '../game/store.jsx';
 import { DIFFICULTY } from '../data/data.js';
 import { Modal, Seg, useRaf } from '../components/Ui.jsx';
 import { sfx } from '../game/sfx.js';
+import { enterFullscreen, exitFullscreen, fullscreenSupported } from '../game/fullscreen.js';
 
 // Calibrage : le joueur tape en rythme sur 8 temps ; le décalage médian ajuste les fenêtres.
 function Calibration({ onDone }) {
@@ -54,6 +55,9 @@ export default function Options({ onClose }) {
   return (
     <Modal title="OPTIONS" onClose={onClose} width={660}>
       <div className="row"><div style={{ width: 210, fontSize: 13 }}>Thème</div><Seg label="Thème" value={settings.theme} onChange={set('theme')} options={[['auto', 'Comme le téléphone'], ['clair', 'Clair'], ['sombre', 'Sombre']]} /></div>
+      {fullscreenSupported() && (
+        <div className="row"><div style={{ width: 210, fontSize: 13 }}>Plein écran</div><Seg label="Plein écran" value={settings.fullscreen} onChange={(v) => { setSettings((s) => ({ ...s, fullscreen: v })); if (v) enterFullscreen(); else exitFullscreen(); }} options={onOff} /><span style={{ fontSize: 11 }}>masque les barres du navigateur</span></div>
+      )}
       <div className="row"><div style={{ width: 210, fontSize: 13 }}>Difficulté</div><Seg label="Difficulté" value={settings.difficulty} onChange={set('difficulty')} options={Object.entries(DIFFICULTY).map(([k, d]) => [k, d.label])} /></div>
       <div className="row"><div style={{ width: 210, fontSize: 13 }}>Assistance au timing</div><Seg label="Assistance au timing" value={settings.assist} onChange={set('assist')} options={onOff} /><span style={{ fontSize: 11 }}>signale l’esquive parfaite</span></div>
       <div className="row"><div style={{ width: 210, fontSize: 13 }}>Mode gaucher</div><Seg label="Mode gaucher" value={settings.gaucher} onChange={set('gaucher')} options={onOff} /><span style={{ fontSize: 11 }}>inverse attaque et défense</span></div>

@@ -13,6 +13,7 @@ export const DEFAULT_SETTINGS = {
   showZones: true,
   sound: true,
   music: true,
+  fullscreen: true, // plein écran automatique sur téléphone
   musicVolume: 0.5,
   vibration: true,
   shake: true,
