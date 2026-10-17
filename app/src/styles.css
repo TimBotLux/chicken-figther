@@ -147,3 +147,21 @@ button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
 /* Retour visuel sous le doigt en combat */
 @keyframes touchRing { from { transform: scale(0.3); opacity: 0.9; } to { transform: scale(1.4); opacity: 0; } }
 .touch-ring { position: absolute; width: 60px; height: 60px; border-radius: 50%; border: 4px solid; pointer-events: none; z-index: 7; animation: touchRing 0.45s ease-out forwards; }
+
+/* Effets d'impact en combat */
+@keyframes camPunch { from { transform: scale(var(--z, 1.05)); } to { transform: scale(1); } }
+.cam-punch { animation: camPunch 0.26s cubic-bezier(0.2, 0.8, 0.3, 1); }
+@keyframes impactFrame { 0% { opacity: 0; transform: scale(1.15); } 12% { opacity: 1; transform: scale(1); } 70% { opacity: 1; } 100% { opacity: 0; } }
+.impact-frame { position: absolute; inset: 0; z-index: 8; pointer-events: none; animation: impactFrame 0.42s ease-out forwards; }
+@keyframes particle { from { transform: translate(-50%, -50%) rotate(0deg) scale(1.2); opacity: 1; } to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)) scale(0.5); opacity: 0; } }
+.particle { position: absolute; z-index: 7; pointer-events: none; animation: particle 0.62s cubic-bezier(0.15, 0.7, 0.35, 1) forwards; }
+@keyframes vignette { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+.hurt-vignette { position: absolute; inset: 0; z-index: 7; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 45%, var(--accent) 120%); animation: vignette 0.45s ease-out forwards; }
+
+/* Arènes de combat */
+[data-theme='sombre'] .arena-decor { filter: brightness(0.62) saturate(1.15); }
+@keyframes spotSweep { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+@keyframes fanBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.fan { animation: fanBob 0.8s ease-in-out infinite; transform-box: fill-box; }
+@keyframes camFlash { 0%, 92%, 100% { opacity: 0; transform: scale(0.4); } 95% { opacity: 1; transform: scale(1.4); } }
+.camflash { width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 18px 8px rgba(255, 255, 255, 0.9); opacity: 0; animation: camFlash 4.2s linear infinite; }
