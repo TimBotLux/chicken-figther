@@ -106,12 +106,12 @@ export function Coach({ size = 160, bg = '#7EE0D6', style }) {
 
 // Animaux challengers : un gabarit commun (rig partagé par carrure) décliné par espèce.
 const LOOKS = {
-  souris: { fur: '#B9B4AE', dark: '#8F8A84', belly: '#E7E2DC', ears: 'round', snout: 'mouse', tail: 'thin', bulk: 0.15, gloves: '#F2C230', shorts: '#2E86DE', label: 'Souris challenger' },
-  moineau: { fur: '#8B5E3C', dark: '#6A4329', belly: '#E9D3B0', ears: 'none', snout: 'beak', tail: 'feather', bulk: 0.25, gloves: '#3FA34D', shorts: '#E8B33A', cap: '#5A3A22', label: 'Moineau challenger' },
-  hamster: { fur: '#E3A75F', dark: '#C0844A', belly: '#FFF1DC', ears: 'small', snout: 'hamster', tail: 'none', bulk: 0.5, gloves: '#D7262B', shorts: '#35303A', label: 'Hamster challenger' },
-  lapin: { fur: '#EDEAE4', dark: '#C9C4BC', belly: '#FFFFFF', ears: 'long', snout: 'bunny', tail: 'puff', bulk: 0.45, gloves: '#FF2E88', shorts: '#2B3A55', label: 'Lapin challenger' },
-  canard: { fur: '#FFFFFF', dark: '#D9D6CF', belly: '#FFFDF6', ears: 'none', snout: 'duck', tail: 'feather', bulk: 0.6, gloves: '#2E86DE', shorts: '#3FA34D', label: 'Canard challenger' },
-  ecureuil: { fur: '#C0642B', dark: '#9A4A1C', belly: '#F2D4AE', ears: 'tuft', snout: 'mouse', tail: 'bushy', bulk: 0.45, gloves: '#B8F000', shorts: '#5A2A2A', label: 'Écureuil challenger' },
+  souris: { fur: '#B9B4AE', dark: '#8F8A84', belly: '#E7E2DC', ears: 'round', snout: 'mouse', tail: 'thin', bulk: 0.15, gloves: '#F2C230', shorts: '#2E86DE', band: '#FFFFFF', label: 'Souris challenger' },
+  moineau: { fur: '#8B5E3C', dark: '#6A4329', belly: '#E9D3B0', ears: 'none', snout: 'beak', tail: 'feather', bulk: 0.25, gloves: '#3FA34D', shorts: '#E8B33A', cap: '#5A3A22', band: '#1A1A1A', label: 'Moineau challenger' },
+  hamster: { fur: '#E3A75F', dark: '#C0844A', belly: '#FFF1DC', ears: 'small', snout: 'hamster', tail: 'none', bulk: 0.5, gloves: '#D7262B', shorts: '#35303A', band: '#FFC93C', label: 'Hamster challenger' },
+  lapin: { fur: '#EDEAE4', dark: '#C9C4BC', belly: '#FFFFFF', ears: 'long', snout: 'bunny', tail: 'puff', bulk: 0.45, gloves: '#FF2E88', shorts: '#2B3A55', band: '#FFFFFF', label: 'Lapin challenger' },
+  canard: { fur: '#FFFFFF', dark: '#D9D6CF', belly: '#FFFDF6', ears: 'none', snout: 'duck', tail: 'feather', bulk: 0.6, gloves: '#2E86DE', shorts: '#3FA34D', band: '#1A1A1A', label: 'Canard challenger' },
+  ecureuil: { fur: '#C0642B', dark: '#9A4A1C', belly: '#F2D4AE', ears: 'tuft', snout: 'mouse', tail: 'bushy', bulk: 0.45, gloves: '#B8F000', shorts: '#5A2A2A', band: '#FFC93C', label: 'Écureuil challenger' },
 };
 
 export function Animal({ look, size = 300, style, fist }) {
@@ -142,7 +142,11 @@ export function Animal({ look, size = 300, style, fist }) {
         <ellipse cx="120" cy="164" rx={22 + 10 * b} ry="36" fill={L.belly} stroke={K} strokeWidth="3" />
         {b > 0.4 && <path d="M108 156 h24 M108 170 h24 M110 184 h20" stroke={L.dark} strokeWidth="2.5" strokeLinecap="round" />}
         <path d="M78 204 C 100 212, 140 212, 162 204 L 170 234 C 156 252, 136 254, 125 242 L 120 232 L 115 242 C 104 254, 84 252, 70 234 Z" fill={L.shorts} stroke={K} strokeWidth="4" strokeLinejoin="round" />
-        <path d="M76 196 C 100 206, 140 206, 164 196 L 165 212 C 140 222, 100 222, 75 212 Z" fill="#F4EFE6" stroke={K} strokeWidth="3" strokeLinejoin="round" />
+        {/* Ceinture de boxeur : large élastique rayé avec plaque centrale */}
+        <path d="M74 192 C 100 203, 140 203, 166 192 L 167 214 C 140 225, 100 225, 73 214 Z" fill={L.band} stroke={K} strokeWidth="3.5" strokeLinejoin="round" />
+        <path d="M74 198 C 100 209, 140 209, 166 198 M73 208 C 100 219, 140 219, 167 208" stroke={L.shorts} strokeWidth="3" fill="none" />
+        <rect x="106" y="198" width="28" height="18" rx="4" fill="#C9CCD1" stroke={K} strokeWidth="2.5" />
+        <path d="M120 201 l2.4 4.8 5.2 0.6 -3.9 3.5 1.1 5.1 -4.8 -2.6 -4.8 2.6 1.1 -5.1 -3.9 -3.5 5.2 -0.6 z" fill="#FFC93C" stroke={K} strokeWidth="1.2" strokeLinejoin="round" />
         <g className="arm-l" style={armStyle(fist?.l)}><path d={arm(-1)} fill={L.fur} stroke={K} strokeWidth="4" strokeLinejoin="round" /></g>
         <g className="arm-r" style={armStyle(fist?.r)}><path d={arm(1)} fill={L.fur} stroke={K} strokeWidth="4" strokeLinejoin="round" /></g>
         {/* oreilles */}
@@ -208,7 +212,7 @@ export function Fighter({ look, size = 300, style, fist }) {
   if (look === 'rat') return <Rat size={size} style={style} fist={fist} />;
   if (look === 'cocorico') {
     // Le rival réutilise le rig du joueur (PRD), avec ses propres couleurs.
-    return <Poulet palier={3} pose="face" size={size} gloves="#2E86DE" pants="#5A2A2A" plumage={{ body: '#E0B25A', shade: '#B8862E', side: '#C99A40' }} style={style} fist={fist} />;
+    return <Poulet palier={3} pose="face" size={size} gloves="#2E86DE" pants="#5A2A2A" plumage={{ body: '#E0B25A', shade: '#B8862E', side: '#C99A40' }} style={style} fist={fist} titleBelt />;
   }
   if (look === 'coach') {
     return <Poulet palier={3} pose="face" size={size} gloves="#F2C230" pants="#F2542D" plumage={{ body: '#E39A4E', shade: '#C9783A', side: '#D08A44' }} style={{ filter: 'saturate(0.7)', ...style }} fist={fist} />;

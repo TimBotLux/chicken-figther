@@ -134,7 +134,7 @@ const HACKLE = 'M98 64 C 92 80, 84 92, 70 100 L 82 102 L 76 110 L 92 106 L 92 11
 const COMB = 'M104 34 C 96 22, 100 12, 106 18 C 106 6, 116 2, 118 14 C 120 2, 132 2, 130 16 C 136 8, 146 14, 138 34 Z';
 const HEAD = 'M120 26 C 136 26, 146 40, 144 56 C 142 70, 132 80, 120 80 C 108 80, 98 70, 96 56 C 94 40, 104 26, 120 26 Z';
 
-export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = '#35303A', gloves = '#D7262B', plumage, style, className, strike = null, guard = null, fist = null }) {
+export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = '#35303A', gloves = '#D7262B', plumage, style, className, strike = null, guard = null, fist = null, titleBelt = false }) {
   const p = Math.max(1, Math.min(5, Math.round(palier)));
   const g = geometry(p);
   const body = plumage?.body ?? '#D9894A';
@@ -226,10 +226,23 @@ export default function Poulet({ palier = 1, pose = 'face', size = 300, pants = 
         <path d={g.serratus} stroke="#8A4A24" strokeWidth="2" strokeLinecap="round" opacity={g.serOp} />
         <path d={g.beltD} fill="#7A4A2A" stroke={INK} strokeWidth="2.2" strokeLinejoin="round" />
         <path d={g.stitchD} stroke="#B88456" strokeWidth="1.3" strokeDasharray="3 3" fill="none" />
-        <rect x="108" y="188" width="24" height="18" rx="2" fill="#C9CCD1" stroke={INK} strokeWidth="2.2" />
-        <rect x="113" y="193" width="14" height="8" rx="1" fill="#8E9299" />
-        <path d="M114 206 L112 222" stroke="#8E9299" strokeWidth="1.5" />
-        <circle cx="112" cy="224" r="2.5" fill="none" stroke="#8E9299" strokeWidth="1.5" />
+        {titleBelt && (() => {
+          // Ceinture de champion (le rival « Cocorico » détient la Ceinture de Plume).
+          const wa = 32 + 12 * ((p - 1) / 4);
+          return (
+            <g>
+              <path d={`M${f(120 - wa - 6)} 184 C${f(120 - wa * 0.4)} 194 ${f(120 + wa * 0.4)} 194 ${f(120 + wa + 6)} 184 L${f(120 + wa + 7)} 206 C${f(120 + wa * 0.4)} 216 ${f(120 - wa * 0.4)} 216 ${f(120 - wa - 7)} 206 Z`} fill="#FFC93C" stroke={INK} strokeWidth="3" strokeLinejoin="round" />
+              <ellipse cx="120" cy="199" rx="20" ry="15" fill="#FFE38A" stroke={INK} strokeWidth="3" />
+              <path d="M112 208 C 116 198, 122 192, 130 189 C 126 196, 122 202, 112 208 Z M114 205 l6 -3 M117 201 l5 -3" fill="#FFFFFF" stroke="#9A6B00" strokeWidth="1.6" strokeLinejoin="round" />
+            </g>
+          );
+        })()}
+        {!titleBelt && (<>
+          <rect x="108" y="188" width="24" height="18" rx="2" fill="#C9CCD1" stroke={INK} strokeWidth="2.2" />
+          <rect x="113" y="193" width="14" height="8" rx="1" fill="#8E9299" />
+          <path d="M114 206 L112 222" stroke="#8E9299" strokeWidth="1.5" />
+          <circle cx="112" cy="224" r="2.5" fill="none" stroke="#8E9299" strokeWidth="1.5" />
+        </>)}
         <g transform={g.hackleT}>
           <path d={HACKLE} fill="#E39A55" stroke={INK} strokeWidth="2.2" strokeLinejoin="round" />
           <path d="M104 80 L 98 98 M114 84 L 112 102 M126 84 L 128 102 M136 80 L 142 98" stroke={shade} strokeWidth="1.6" strokeLinecap="round" />
